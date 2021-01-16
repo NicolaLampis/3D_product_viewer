@@ -2,13 +2,14 @@ let scene, camera, renderer;
 
 let cube;
 
-let ADD = 0.01;
+let speed = 0.01;  // used to control the speed of rotation
+
 
 
 // 3D product
 let createCube = function() {
-    let geometry = new THREE.BoxGeometry(1, 2, 1);
-    let material = new THREE.MeshBasicMaterial({color : 0x00a1cb});
+    let geometry = new THREE.BoxGeometry(1, 2, 1.1);   // abstract units
+    let material = new THREE.MeshBasicMaterial({color: 0x00a1cb});  // wireframe: true  as another property
 
     cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
@@ -24,23 +25,35 @@ let init = function() {
 
     // create and locate the camera
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.z = 5;
+    camera.position.z = 6;
+    camera.aspect = 1;
 
     // Add the 3D product
     createCube();
 
     // create the renderer
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    //renderer = new THREE.WebGLRenderer({canvas: container, antialias: true});
 
-    document.body.appendChild(renderer.domElement);
+                //   mycontainer = document.getElementById("container");
+
+    //renderer.setSize(window.innerWidth, window.innerHeight);
+                //   renderer.setSize(mycontainer.clientWidth, mycontainer.clientHeight);
+
+    //document.body.appendChild(renderer.domElement);
+                //   mycontainer.appendChild(renderer.domElement);
+
+
+const canvasOne = document.querySelector("#canvContainer");
+renderer = new THREE.WebGLRenderer({canvas: my_canvas});		
+renderer.setSize(canvasOne.clientWidth, canvasOne.clientHeight);	
+canvasOne.appendChild(renderer.domElement);
 
 };
 
 // main animation loop - calls 50-60 in a second
 let mainLoop = function() {
 
-    cube.rotation.y += ADD;
+    cube.rotation.y += speed;
 
     renderer.render(scene, camera);
     requestAnimationFrame(mainLoop);
